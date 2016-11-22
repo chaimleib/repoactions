@@ -1,4 +1,4 @@
-# repoactions 0.0.2
+# repoactions 0.0.3
 
 On navigating into a git repository, sources its repoactions.sh script.
 
@@ -79,4 +79,5 @@ make purge
 ## Changelog
 * 0.0.1 (2016-11-21) - initial release
 * 0.0.2 (2016-11-21) - added support for RC configure variable. Set `PROMPT_COMMAND` in a more robust way. Improved safety of install and uninstall auxiliary scripts.
+* 0.0.3 (2016-11-21) - added -v and -h option to `show_repoactions`
 
