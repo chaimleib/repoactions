@@ -1,19 +1,15 @@
-# repoactions 0.0.8
+# repoactions 0.0.9
 
 On navigating into a git repository, sources its repoactions.sh script.
 
 ## Motivation
-For certain projects, it is often necessary to set up special shell environment variables. These variables change the behavior of the project. For example:
+For certain projects, it is often necessary to set up special shell environment variables. For example:
 
 * [NVM](https://github.com/creationix/nvm) uses special variables to set the interpreter version.
 * [Go](https://github.com/golang/go/wiki) uses the GOPATH variable to define where to look for special imports.
 * Web servers may use special variables to set port numbers and other settings.
 
-Wouldn't it be nice if all these variables got set up automatically as soon as you cd-ed into the repo? Wouldn't it be nice if you didn't have to clutter up your handcrafted dotfiles with project-specific code? Have you ever wished that you knew exactly how your colleagues set up their environment?
-
-With `repoactions`, you can do it all!
-
-The vision of `repoactions` is to have one script file in your git repo, in a standard location, which you can share with co-developers and follows your project around, so that your whole team is on the same page.
+Wouldn't it be nice if all these variables got set up automatically as soon as you cd-ed into the repo? If you didn't have to clutter your handcrafted dotfiles with project-specific code? If you knew exactly how your colleagues set up their environment? With repoactions, you can do it all!
 
 ## Install
 
@@ -22,13 +18,15 @@ The vision of `repoactions` is to have one script file in your git repo, in a st
 make install
 ```
 
-The above should be enough for most users. Mac users with [Homebrew](http://brew.sh/) installed can simply run:
+### Homebrew
+Mac users with [Homebrew](http://brew.sh/) installed can simply run:
 
 ```bash
 brew install chaimleib/formulae/repoactions
 ```
 
-For more control, `configure` currently allows you to set the installation prefix with the `--prefix=` option. You can also specify where the login code gets injected by using the `--with-rc=FILE` option (default is `~/.profile`):
+### Advanced options
+For more control, `configure` currently allows you to set the installation prefix with the `--prefix=` option. You can also specify where the login code gets injected by using the `--with-rc=FILE` option (default is `$HOME/.profile`):
 
 ```bash
 ./configure --prefix=/opt --with-rc="$HOME/.bashrc.d/repoactions.sh"
@@ -89,4 +87,4 @@ make purge
 * 0.0.6 (2016-11-22) - prevent uninstall error on missing rc
 * 0.0.7 (2016-11-22) - readme edits for Homebrew instructions
 * 0.0.8 (2016-11-22) - fix readme link to Homebrew
-
+* 0.0.9 (2016-11-22) - use $HOME instead of ~ in documentation; absolute paths are required for `--with-rc=`, shorten readme

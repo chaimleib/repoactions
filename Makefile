@@ -11,7 +11,7 @@ uninstall:
 	./uninstall.sh "$(PREFIX)" "$(RC)"
 
 purge: uninstall
-	rm -rf ~/.config/repoactions
+	rm -rf "${HOME}/.config/repoactions"
 
 clean:
 	rm -rf autom4te.cache/

@@ -1,7 +1,7 @@
-AC_INIT(repoactions,0.0.8)
+AC_INIT(repoactions,0.0.9)
 AC_MSG_NOTICE(AC_PACKAGE_NAME AC_PACKAGE_VERSION)
 AC_ARG_WITH(rc,
-            AS_HELP_STRING([--with-rc=FILE], [Where to install the login script that enables ]AC_PACKAGE_NAME[ (default: ~/.profile)]))
+            AS_HELP_STRING([--with-rc=FILE], [Where to install the login script that enables ]AC_PACKAGE_NAME[ (default: $HOME/.profile)]))
 AC_PREFIX_DEFAULT([/usr/local])
 
 AC_SUBST(version,AC_PACKAGE_VERSION)
