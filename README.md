@@ -3,7 +3,17 @@
 On navigating into a git repository, sources its repoactions.sh script.
 
 ## Motivation
-Often in Node and Go projects, it is necessary to set up the interpreter version or import paths via project-specific environment variables. repoactions runs these actions for you automatically when you enter the project directory.
+For certain projects, it is often necessary to set up special shell environment variables. These variables change the behavior of the project. For example:
+
+* [NVM](https://github.com/creationix/nvm) uses special variables to set the interpreter version.
+* [Go](https://github.com/golang/go/wiki) uses the GOPATH variable to define where to look for special imports.
+* Web servers may use special variables to set port numbers and other settings.
+
+Wouldn't it be nice if all these variables got set up automatically as soon as you cd-ed into the repo? Wouldn't it be nice if you didn't have to clutter up your handcrafted dotfiles with project-specific code? Have you ever wished that you knew exactly how your colleagues set up their environment?
+
+With `repoactions`, you can do it all!
+
+The vision of `repoactions` is to have one script file in your git repo, in a standard location, which you can share with co-developers and follows your project around, so that your whole team is on the same page.
 
 ## Install
 
@@ -21,13 +31,19 @@ touch repoactions.sh
 chmod +x repoactions.sh
 ```
 
-After that, you should see a message telling to add this repo to the whitelist. Copy and paste in the command it tells you. For example:
+After that, you should see a message telling to add this repo to the whitelist. (This is a security feature.) Copy and paste in the command it tells you. For example:
 
 ```bash
 echo "git@github.com:chaimleib/repoactions.git" >> "/Users/chalbert/.config/repoactions/whitelist"
 ```
 
 From now on, the repoactions script will run each time you navigate from outside your repo into it.
+
+You can relocate your repo anywhere on your disk, and your whitelist will still work, because your repo is identified by its URL:
+
+```bash
+git config --get remote.origin.url
+```
 
 ### Silencing warnings
 
