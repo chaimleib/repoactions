@@ -80,5 +80,6 @@ make purge
 * 0.0.1 (2016-11-21) - initial release
 * 0.0.2 (2016-11-21) - added support for RC configure variable. Set `PROMPT_COMMAND` in a more robust way. Improved safety of install and uninstall auxiliary scripts.
 * 0.0.3 (2016-11-21) - added -v and -h option to `show_repoactions`
-* 0.0.4 (2016-11-21) - changed RC configure variable to `--with-rc=FILE` option
+* 0.0.4 (2016-11-21) - changed RC configure variable to `--with-rc=FILE` option, added ignore list
+* 0.0.5 (2016-11-22) - fixed missing Makefile.in
 
