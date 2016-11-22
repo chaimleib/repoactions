@@ -22,7 +22,11 @@ The vision of `repoactions` is to have one script file in your git repo, in a st
 make install
 ```
 
-The above should be enough for most users.
+The above should be enough for most users. Mac users with [Homebrew](https://brew.sh) installed can simply run:
+
+```bash
+brew install chaimleib/formulae/repoactions
+```
 
 For more control, `configure` currently allows you to set the installation prefix with the `--prefix=` option. You can also specify where the login code gets injected by using the `--with-rc=FILE` option (default is `~/.profile`):
 
@@ -83,4 +87,5 @@ make purge
 * 0.0.4 (2016-11-21) - changed RC configure variable to `--with-rc=FILE` option, added ignore list
 * 0.0.5 (2016-11-22) - fixed missing Makefile.in
 * 0.0.6 (2016-11-22) - prevent uninstall error on missing rc
+* 0.0.7 (2016-11-22) - readme edits for Homebrew instructions
 
