@@ -1,4 +1,4 @@
-# repoactions 0.0.7
+# repoactions 0.0.8
 
 On navigating into a git repository, sources its repoactions.sh script.
 
@@ -22,7 +22,7 @@ The vision of `repoactions` is to have one script file in your git repo, in a st
 make install
 ```
 
-The above should be enough for most users. Mac users with [Homebrew](https://brew.sh) installed can simply run:
+The above should be enough for most users. Mac users with [Homebrew](http://brew.sh/) installed can simply run:
 
 ```bash
 brew install chaimleib/formulae/repoactions
@@ -88,4 +88,5 @@ make purge
 * 0.0.5 (2016-11-22) - fixed missing Makefile.in
 * 0.0.6 (2016-11-22) - prevent uninstall error on missing rc
 * 0.0.7 (2016-11-22) - readme edits for Homebrew instructions
+* 0.0.8 (2016-11-22) - fix readme link to Homebrew
 

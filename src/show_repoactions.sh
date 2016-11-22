@@ -8,7 +8,7 @@
 if ! type _show_repoactions &>/dev/null; then
 function _show_repoactions() {
     if [ -n "$1" ]; then
-        echo "repoactions v0.0.7"
+        echo "repoactions v0.0.8"
         echo "https://github.com/chaimleib/repoactions"
         echo "show_repoactions - echo reponame:path/to/repoactions.sh"
         echo "Usage: show_repoactions [-v|-h]"
