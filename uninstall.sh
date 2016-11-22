@@ -13,5 +13,6 @@ libexec="${PREFIX}/libexec/repoactions"
 rm -rf "$libexec"
 rm -f "${PREFIX}/bin/show_repoactions"
 profile="$RC"
-sed -i '' '/^# BEGIN repoactions/,/^# END repoactions/d' "$profile"
+[ -f "$profile" ] &&
+    sed -i '' '/^# BEGIN repoactions/,/^# END repoactions/d' "$profile"
 

@@ -1,4 +1,4 @@
-# repoactions 0.0.5
+# repoactions 0.0.6
 
 On navigating into a git repository, sources its repoactions.sh script.
 
@@ -82,4 +82,5 @@ make purge
 * 0.0.3 (2016-11-21) - added -v and -h option to `show_repoactions`
 * 0.0.4 (2016-11-21) - changed RC configure variable to `--with-rc=FILE` option, added ignore list
 * 0.0.5 (2016-11-22) - fixed missing Makefile.in
+* 0.0.6 (2016-11-22) - prevent uninstall error on missing rc
 
