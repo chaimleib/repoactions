@@ -18,8 +18,19 @@ The vision of `repoactions` is to have one script file in your git repo, in a st
 ## Install
 
 ```bash
+./configure
 make install
 ```
+
+The above should be enough for most users.
+
+For more control, `configure` currently allows you to set the installation prefix with the `--prefix=` option. You can also specify where the login code gets injected by using the RC variable (default is `~/.profile`):
+
+```bash
+RC="$HOME/.bashrc.d/repoactions.sh" ./configure --prefix=/opt
+```
+
+For more information, run `./configure --help`.
 
 ## Usage
 
@@ -66,5 +77,6 @@ make purge
 ```
 
 ## Changelog
-* 0.0.1 - initial release
+* 0.0.1 (2016-11-21) - initial release
+* 0.0.2 (2016-11-21) - added support for RC configure variable. Set `PROMPT_COMMAND` in a more robust way. Improved safety of install and uninstall auxiliary scripts.
 

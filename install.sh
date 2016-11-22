@@ -1,6 +1,14 @@
 #!/bin/bash
 
 PREFIX="$1"
+RC="$2"
+
+if [ -z "$PREFIX" ]; then
+    echo "Run this instead:"
+    echo ""
+    echo "  ./configure"
+    echo "  make install"
+fi
 
 # ensure prefix paths
 libexec="${PREFIX}/libexec/repoactions"
@@ -24,14 +32,14 @@ ln -s ../libexec/repoactions/show_repoactions.sh show_repoactions
 popd >/dev/null
 
 # setup prompt command
-profile="${HOME}/.profile"
-cmd="'_repoactions'"
-[ -n "$PROMPT_COMMAND" ] &&
-    cmd="$cmd\"; \${PROMPT_COMMAND}\""
+profile="$RC"
 cat << EOF >> "$profile"
 # BEGIN repoactions triggers
 . "$libexec/_repoactions.sh"
-export PROMPT_COMMAND=$cmd
+cmd='_repoactions'
+[ -n "\$PROMPT_COMMAND" ] &&
+    cmd="\$cmd; \${PROMPT_COMMAND}"
+export PROMPT_COMMAND="\$cmd"
 # END repoactions
 EOF
 

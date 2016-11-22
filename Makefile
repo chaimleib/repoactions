@@ -1,13 +1,14 @@
 SHELL=bash
 PREFIX=/usr/local
+RC=${HOME}/.profile
 
 all: Makefile README.md
 
 install: all uninstall install.sh
-	./install.sh "$(PREFIX)"
+	./install.sh "$(PREFIX)" "$(RC)"
 
 uninstall:
-	./uninstall.sh "$(PREFIX)"
+	./uninstall.sh "$(PREFIX)" "$(RC)"
 
 purge: uninstall
 	rm -rf ~/.config/repoactions
