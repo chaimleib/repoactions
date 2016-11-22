@@ -1,0 +1,10 @@
+AC_INIT(repoactions,0.0.1)
+AC_MSG_NOTICE(AC_PACKAGE_NAME AC_PACKAGE_VERSION)
+AC_PREFIX_DEFAULT([/usr/local])
+
+AC_SUBST(version,AC_PACKAGE_VERSION)
+
+AC_OUTPUT([README.md])
+#AC_OUTPUT([show_repoactions.sh])
+AC_OUTPUT([Makefile])
+

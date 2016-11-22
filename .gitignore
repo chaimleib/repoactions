@@ -1,0 +1,7 @@
+*.swp
+.DS_Store
+autom4te.cache/
+config.log
+config.status
+Makefile.in
+
