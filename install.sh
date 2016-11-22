@@ -27,6 +27,7 @@ touch "${config}/ignore"
 
 # copy and link
 cp -Rf ./src/*.sh ./README.md ./LICENSE "${libexec}/"
+chmod +x "${libexec}"/*.sh
 pushd "${PREFIX}/bin" >/dev/null
 ln -s ../libexec/repoactions/show_repoactions.sh show_repoactions
 popd >/dev/null
