@@ -19,5 +19,3 @@ function _repoactions() {
     script="${result#*|}"
     source "$script"
 }
-
-

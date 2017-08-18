@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e -x
 
 PREFIX="$1"
 RC="$2"
@@ -8,6 +9,7 @@ if [ -z "$PREFIX" ]; then
     echo ""
     echo "  ./configure"
     echo "  make install"
+    exit 1
 fi
 
 # ensure prefix paths
@@ -36,13 +38,12 @@ popd >/dev/null
 profile="$RC"
 cat << EOF >> "$profile"
 # BEGIN repoactions triggers
-. "$libexec/_repoactions.sh"
-cmd='_repoactions'
-[ -n "\$PROMPT_COMMAND" ] &&
-    cmd="\$cmd; \${PROMPT_COMMAND}"
-export PROMPT_COMMAND="\$cmd"
+source "$libexec/_repoactions.sh"
+PROMPT_COMMAND="_repoactions;\${PROMPT_COMMAND}"
+export PROMPT_COMMAND
 # END repoactions
 EOF
 
-echo "Note: To trigger the repoactions, few lines have been added to $profile."
-
+echo "Note: repoactions sets itself up when you open your shell, so a few"
+echo "lines have been added to"
+echo "  $profile"

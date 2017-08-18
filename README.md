@@ -1,4 +1,4 @@
-# repoactions 0.0.9
+# repoactions 0.0.10
 
 On navigating into a git repository, sources its repoactions.sh script.
 
