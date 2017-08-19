@@ -33,3 +33,5 @@ config.status: configure
 configure: configure.ac
 	autoconf
 
+test: configure
+	shellcheck $(shell find . -iname '*.sh')

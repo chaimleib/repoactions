@@ -5,7 +5,11 @@
 # git repo is in the whitelist, we echo the name of the repo, followed by a
 # vertical pipe, and then the path to repoactions.sh script. Otherwise, we echo
 # nothing.
+
 if ! type _show_repoactions &>/dev/null; then
+
+# if args passed, show help. Normally called without args.
+# shellcheck disable=SC2120
 function _show_repoactions() {
     if [ -n "$1" ]; then
         echo "repoactions v@version@"
@@ -51,12 +55,14 @@ function _ra_is_listed() {
     p="$1"
     f="${HOME}/.config/repoactions/$2"
     [ -f "$f" ] || return 1
-    while read l; do
+    while read -r l; do
         [ "$l" == "$p" ] && return
     done < "$f"
     return 1
 }
+
 fi
 
+# shellcheck disable=SC2119
 _show_repoactions
 

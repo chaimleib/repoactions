@@ -88,3 +88,4 @@ make purge
 * 0.0.7 (2016-11-22) - readme edits for Homebrew instructions
 * 0.0.8 (2016-11-22) - fix readme link to Homebrew
 * 0.0.9 (2016-11-22) - use $HOME instead of ~ in documentation; absolute paths are required for `--with-rc=`, shorten readme
+* 0.0.10 (2017-08-18) - simplified certain commands. Add shellcheck test.

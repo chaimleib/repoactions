@@ -7,7 +7,7 @@
 # displayed. However, some output may be sent to stderr. For example:
 #     export PROMPT_COMMAND='_repoactions'
 function _repoactions() {
-    result="`show_repoactions`"
+    result="$(show_repoactions)"
     if [ -z "$result" ]; then
         export REPOACTIONS_PROJ=
         return
@@ -17,5 +17,6 @@ function _repoactions() {
         return
     export REPOACTIONS_PROJ="$proj"
     script="${result#*|}"
+    # shellcheck source=repoactions.sh
     source "$script"
 }
