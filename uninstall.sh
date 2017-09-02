@@ -16,5 +16,5 @@ rm -rf "$libexec"
 rm -f "${PREFIX}/bin/show_repoactions"
 profile="$RC"
 if [ -f "$profile" ]; then
-	sed -i '' '/^# BEGIN repoactions/,/^# END repoactions/d' "$profile"
+    sed -i '' '/^# BEGIN repoactions/,/^# END repoactions/d' "$profile"
 fi

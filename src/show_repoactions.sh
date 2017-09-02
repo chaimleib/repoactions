@@ -32,7 +32,6 @@ function _show_repoactions() {
     [ -x "$script" ] ||
         return
 
-
     if _ra_is_listed "$proj" whitelist; then
         echo "${proj}|${script}"
         return
@@ -65,4 +64,3 @@ fi
 
 # shellcheck disable=SC2119
 _show_repoactions
-
