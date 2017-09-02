@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -x
+set -e
 
 PREFIX="$1"
 RC="$2"
@@ -15,6 +15,6 @@ libexec="${PREFIX}/libexec/repoactions"
 rm -rf "$libexec"
 rm -f "${PREFIX}/bin/show_repoactions"
 profile="$RC"
-[ -f "$profile" ] &&
-    sed -i '' '/^# BEGIN repoactions/,/^# END repoactions/d' "$profile"
-
+if [ -f "$profile" ]; then
+	sed -i '' '/^# BEGIN repoactions/,/^# END repoactions/d' "$profile"
+fi

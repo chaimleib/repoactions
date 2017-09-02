@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -x
+set -e
 
 PREFIX="$1"
 RC="$2"
@@ -14,15 +14,18 @@ fi
 
 # ensure prefix paths
 libexec="${PREFIX}/libexec/repoactions"
-[ -d "$libexec" ] ||
+if ! [ -d "$libexec" ]; then
     mkdir -p "$libexec"
-[ -d "${PREFIX}/bin" ] ||
+fi
+if ! [ -d "${PREFIX}/bin" ]; then
     mkdir -p "${PREFIX}/bin"
+fi
 
 # ensure whitelist and ignore
 config="${HOME}/.config/repoactions"
-[ -d "$config" ] ||
+if ! [ -d "$config" ]; then
     mkdir -p "$config"
+fi
 touch "${config}/whitelist"
 touch "${config}/ignore"
 
