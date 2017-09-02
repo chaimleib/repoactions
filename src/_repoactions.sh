@@ -13,8 +13,9 @@ function _repoactions() {
         return
     fi
     proj="${result%|*}"
-    [ "$REPOACTIONS_PROJ" == "$proj" ] &&
+    if [ "$REPOACTIONS_PROJ" == "$proj" ]; then
         return
+    fi
     export REPOACTIONS_PROJ="$proj"
     script="${result#*|}"
     # shellcheck source=repoactions.sh

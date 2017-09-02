@@ -4,4 +4,3 @@
 #   ~/.config/repoactions/whitelist
 
 echo 'Hello world!'
-

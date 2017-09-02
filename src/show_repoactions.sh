@@ -55,7 +55,9 @@ function _ra_is_listed() {
     f="${HOME}/.config/repoactions/$2"
     [ -f "$f" ] || return 1
     while read -r l; do
-        [ "$l" == "$p" ] && return
+        if [ "$l" == "$p" ]; then
+            return
+        fi
     done < "$f"
     return 1
 }
