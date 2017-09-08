@@ -2,7 +2,7 @@
 set -e
 
 PREFIX="$1"
-RC="$2"
+profile="$2"
 
 if [ -z "$PREFIX" ]; then
     echo "Run this instead:"
@@ -29,7 +29,6 @@ fi
 touch "${config}/whitelist"
 touch "${config}/ignore"
 
-
 # copy and link
 cp -Rf ./src/*.sh ./README.md ./LICENSE "${libexec}/"
 chmod +x "${libexec}"/*.sh
@@ -38,7 +37,6 @@ ln -s ../libexec/repoactions/show_repoactions.sh show_repoactions
 popd >/dev/null
 
 # setup prompt command
-profile="$RC"
 cat << EOF >> "$profile"
 # BEGIN repoactions triggers
 source "$libexec/_repoactions.sh"
@@ -50,3 +48,4 @@ EOF
 echo "Note: repoactions sets itself up when you open your shell, so a few"
 echo "lines have been added to"
 echo "  $profile"
+

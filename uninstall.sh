@@ -2,7 +2,7 @@
 set -e
 
 PREFIX="$1"
-RC="$2"
+profile="$2"
 
 if [ -z "$PREFIX" ]; then
     echo "Run this instead:"
@@ -14,7 +14,7 @@ fi
 libexec="${PREFIX}/libexec/repoactions"
 rm -rf "$libexec"
 rm -f "${PREFIX}/bin/show_repoactions"
-profile="$RC"
 if [ -f "$profile" ]; then
     sed -i '' '/^# BEGIN repoactions/,/^# END repoactions/d' "$profile"
 fi
+

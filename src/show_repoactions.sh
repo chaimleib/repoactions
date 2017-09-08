@@ -7,15 +7,14 @@
 # nothing.
 
 if ! type _show_repoactions &>/dev/null; then
-
-# if args passed, show help. Normally called without args.
-# shellcheck disable=SC2120
 function _show_repoactions() {
     if [ -n "$1" ]; then
-        echo "repoactions v0.0.10"
+        echo "repoactions v0.0.11"
         echo "https://github.com/chaimleib/repoactions"
         echo "show_repoactions - echo reponame:path/to/repoactions.sh"
-        echo "Usage: show_repoactions [-v|-h]"
+        echo "Usage: show_repoactions"
+        echo "       show_repoactions [-v|-h]"
+        echo ""
         echo "Options:"
         echo "  v|h    Show this message"
         return
@@ -61,8 +60,10 @@ function _ra_is_listed() {
     done < "$f"
     return 1
 }
-
 fi
 
-# shellcheck disable=SC2119
-_show_repoactions
+if [ "${BASH_SOURCE[0]}" == "${0}" ]; then
+    # script is not being sourced; pass args to _show_repoactions
+    _show_repoactions "$@"
+fi
+
