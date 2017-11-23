@@ -28,15 +28,15 @@ function _repoactions_main() {
     case "$1" in
     '-e')
         _repoactions_echo
-        return
+        return "$?"
         ;;
     '-c')
         _repoactions_create_configs
-        return
+        return "$?"
         ;;
     '-z')
         _repoactions_zap_configs
-        return
+        return "$?"
         ;;
     '-'[hv])
         _repoactions_usage
@@ -51,7 +51,7 @@ function _repoactions_main() {
 
 function _repoactions_echo() {
     if ! [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]; then
-        return
+        return 1
     fi
 
     projdir="$(git rev-parse --show-toplevel 2>/dev/null)"
@@ -167,5 +167,6 @@ function _repoactions_zap_configs() {
 if [ "${BASH_SOURCE[0]}" == "${0}" ]; then
     # script is not being sourced; pass args to _repoactions_main
     _repoactions_main "$@"
+    exit "$?"
 fi
 
