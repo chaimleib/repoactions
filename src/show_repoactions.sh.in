@@ -6,23 +6,45 @@
 # vertical pipe, and then the path to repoactions.sh script. Otherwise, we echo
 # nothing.
 
-# if ! type _show_repoactions &>/dev/null; then
+# if ! type _repoactions_main &>/dev/null; then
 function _repoactions_usage() {
     echo "repoactions v@version@"
     echo "@url@"
-    echo "show_repoactions - echo reponame:path/to/repoactions.sh"
-    echo "Usage: show_repoactions"
-    echo "       show_repoactions [-v|-h]"
+    echo "repoactions - run script on entering a git repo"
+    echo "Usage: show_repoactions -[hvce]"
     echo ""
     echo "Options:"
-    echo "  v|h    Show this message"
+    echo "  e      Echoes projId|path/to/proj/repoactions.sh"
+    echo "  c      Create config files, if not present"
+    echo "  h, v   Show this message"
 }
 
-function _show_repoactions() {
-    if [ -n "$1" ]; then
+function _repoactions_main() {
+    if ! [ -n "$1" ]; then
         _repoactions_usage
         return
     fi
+    case "$1" in
+    '-'[hv])
+        _repoactions_usage
+        return
+        ;;
+    '-c')
+        _repoactions_create_configs
+        return
+        ;;
+    '-e')
+        _repoactions_echo
+        return
+        ;;
+    *)
+        _repoactions_usage >&2
+        return 1
+        ;;
+    esac
+}
+
+function _repoactions_echo() {
     if ! [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]; then
         return
     fi
@@ -84,10 +106,25 @@ function _repoactions_config() {
     fi
     echo "$config_dir"
 }
+
+function _repoactions_create_configs() {
+    local cfgDir="$(_repoactions_config)"
+    if ! [ -d "$cfgDir" ]; then
+        mkdir -p "$cfgDir"
+    fi
+    local whitelist="$(_repoactions_config whitelist)"
+    if ! [ -f "$whitelist" ]; then
+        touch "$whitelist"
+    fi
+    local ignore="$(_repoactions_config ignore)"
+    if ! [ -f "$ignore" ]; then
+        touch "$ignore"
+    fi
+}
 # fi
 
 if [ "${BASH_SOURCE[0]}" == "${0}" ]; then
-    # script is not being sourced; pass args to _show_repoactions
-    _show_repoactions "$@"
+    # script is not being sourced; pass args to _repoactions_main
+    _repoactions_main "$@"
 fi
 
