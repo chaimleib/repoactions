@@ -23,25 +23,35 @@ function _show_repoactions() {
         _repoactions_usage
         return
     fi
-    [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ] ||
+    if ! [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]; then
         return
+    fi
 
     projdir="$(git rev-parse --show-toplevel 2>/dev/null)"
 
+    # Get the project id to determine whitelist status
     proj="$(git config --get remote.origin.url 2>/dev/null)"
     [ -n "$proj" ] || proj="$projdir"
 
     script="${projdir}/repoactions.sh"
-    [ -x "$script" ] ||
+    if ! [ -x "$script" ]; then
         return
+    fi
 
+    # Success!
     if _ra_is_listed "$proj" whitelist; then
         echo "${proj}|${script}"
         return
     fi
+
+    # Not in whitelist
     config="${HOME}/.config/repoactions"
-    _ra_is_listed "$proj" ignore ||
-        cat << EOF >&2
+    if _ra_is_listed "$proj" ignore; then
+        return
+    fi
+
+    # Not in ignore list
+    cat << EOF >&2
 repoactions: found $script
 To enable it, add its project to the whitelist:
 
@@ -54,14 +64,16 @@ EOF
 }
 
 function _ra_is_listed() {
-    p="$1"
-    f="${HOME}/.config/repoactions/$2"
-    [ -f "$f" ] || return 1
-    while read -r l; do
-        if [ "$l" == "$p" ]; then
+    projId="$1"
+    list="${HOME}/.config/repoactions/$2"
+    if ! [ -f "$list" ]; then
+        return 1
+    fi
+    while read -r line; do
+        if [ "$line" == "$projId" ]; then
             return
         fi
-    done < "$f"
+    done < "$list"
     return 1
 }
 # fi
