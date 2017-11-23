@@ -50,6 +50,10 @@ function _repoactions_main() {
 }
 
 function _repoactions_echo() {
+    local projdir
+    local proj
+    local script
+
     if ! [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]; then
         return 1
     fi
@@ -58,7 +62,9 @@ function _repoactions_echo() {
 
     # Get the project id to determine whitelist status
     proj="$(git config --get remote.origin.url 2>/dev/null)"
-    [ -n "$proj" ] || proj="$projdir"
+    if [ -z "$proj" ]; then
+        proj="$projdir"
+    fi
 
     script="${projdir}/repoactions.sh"
     if ! [ -x "$script" ]; then
@@ -90,8 +96,11 @@ EOF
 }
 
 function _repoactions_is_listed() {
-    local projId="$1"
-    local list="$(_repoactions_config $2)"
+    local projId
+    local list
+
+    projId="$1"
+    list="$(_repoactions_config "$2")"
     if ! [ -f "$list" ]; then
         return 1
     fi
@@ -104,7 +113,9 @@ function _repoactions_is_listed() {
 }
 
 function _repoactions_config() {
-    local config_dir="${HOME}/.config/repoactions"
+    local config_dir
+
+    config_dir="${HOME}/.config/repoactions"
     if [ -n "$1" ]; then
         echo "$config_dir/$1"
         return
@@ -113,17 +124,21 @@ function _repoactions_config() {
 }
 
 function _repoactions_create_configs() {
-    local cfgDir="$(_repoactions_config)"
+    local cfgDir
+    local whitelist
+    local ignore
+
+    cfgDir="$(_repoactions_config)"
     if ! [ -d "$cfgDir" ]; then
         echo "Creating the config directory ($cfgDir) ..."
         mkdir -p "$cfgDir"
     fi
-    local whitelist="$(_repoactions_config whitelist)"
+    whitelist="$(_repoactions_config whitelist)"
     if ! [ -f "$whitelist" ]; then
         echo "Creating a blank whitelist ($whitelist) ..."
         touch "$whitelist"
     fi
-    local ignore="$(_repoactions_config ignore)"
+    ignore="$(_repoactions_config ignore)"
     if ! [ -f "$ignore" ]; then
         echo "Creating a blank ignore file ($ignore) ..."
         touch "$ignore"
@@ -132,7 +147,9 @@ function _repoactions_create_configs() {
 }
 
 function _repoactions_zap_configs() {
-    local cfgDir="$(_repoactions_config)"
+    local cfgDir
+
+    cfgDir="$(_repoactions_config)"
     if ! [ -d "$cfgDir" ]; then
         echo "No configs to delete" >&2
         return 1
@@ -169,4 +186,3 @@ if [ "${BASH_SOURCE[0]}" == "${0}" ]; then
     _repoactions_main "$@"
     exit "$?"
 fi
-
