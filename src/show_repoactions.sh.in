@@ -137,6 +137,26 @@ function _repoactions_zap_configs() {
         echo "No configs to delete" >&2
         return 1
     fi
+    printf '%s' "Really delete repoactions configs? [y/N] "
+    while read -r line; do
+        case "$line" in
+        [yY]*)
+            break
+            ;;
+        [nN]*)
+            echo "Canceled."
+            return 1
+            ;;
+        '')
+            echo "Canceled."
+            return 1
+            ;;
+        *)
+            echo "Answer with 'y' or 'n'"
+            ;;
+        esac
+        printf '%s' "Really delete repoactions configs? [y/N] "
+    done
     echo "Deleting config directory ($cfgDir) ..."
     rm -rf "$cfgDir"
     echo "Done; configs deleted"
