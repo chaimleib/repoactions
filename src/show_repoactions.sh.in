@@ -39,14 +39,13 @@ function _show_repoactions() {
     fi
 
     # Success!
-    if _ra_is_listed "$proj" whitelist; then
+    if _repoactions_is_listed "$proj" whitelist; then
         echo "${proj}|${script}"
         return
     fi
 
     # Not in whitelist
-    config="${HOME}/.config/repoactions"
-    if _ra_is_listed "$proj" ignore; then
+    if _repoactions_is_listed "$proj" ignore; then
         return
     fi
 
@@ -55,17 +54,17 @@ function _show_repoactions() {
 repoactions: found $script
 To enable it, add its project to the whitelist:
 
-    echo "$proj" >> "$config/whitelist"
+    echo "$proj" >> "$(_repoactions_config whitelist)"
 
 Or, to silence this message without enabling the repoactions script:
 
-    echo "$proj" >> "$config/ignore"
+    echo "$proj" >> "$(_repoactions_config ignore)"
 EOF
 }
 
-function _ra_is_listed() {
-    projId="$1"
-    list="${HOME}/.config/repoactions/$2"
+function _repoactions_is_listed() {
+    local projId="$1"
+    local list="$(_repoactions_config $2)"
     if ! [ -f "$list" ]; then
         return 1
     fi
@@ -75,6 +74,15 @@ function _ra_is_listed() {
         fi
     done < "$list"
     return 1
+}
+
+function _repoactions_config() {
+    local config_dir="${HOME}/.config/repoactions"
+    if [ -n "$1" ]; then
+        echo "$config_dir/$1"
+        return
+    fi
+    echo "$config_dir"
 }
 # fi
 
