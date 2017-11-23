@@ -6,17 +6,21 @@
 # vertical pipe, and then the path to repoactions.sh script. Otherwise, we echo
 # nothing.
 
-if ! type _show_repoactions &>/dev/null; then
+# if ! type _show_repoactions &>/dev/null; then
+function _repoactions_usage() {
+    echo "repoactions v@version@"
+    echo "@url@"
+    echo "show_repoactions - echo reponame:path/to/repoactions.sh"
+    echo "Usage: show_repoactions"
+    echo "       show_repoactions [-v|-h]"
+    echo ""
+    echo "Options:"
+    echo "  v|h    Show this message"
+}
+
 function _show_repoactions() {
     if [ -n "$1" ]; then
-        echo "repoactions v@version@"
-        echo "@url@"
-        echo "show_repoactions - echo reponame:path/to/repoactions.sh"
-        echo "Usage: show_repoactions"
-        echo "       show_repoactions [-v|-h]"
-        echo ""
-        echo "Options:"
-        echo "  v|h    Show this message"
+        _repoactions_usage
         return
     fi
     [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ] ||
@@ -60,7 +64,7 @@ function _ra_is_listed() {
     done < "$f"
     return 1
 }
-fi
+# fi
 
 if [ "${BASH_SOURCE[0]}" == "${0}" ]; then
     # script is not being sourced; pass args to _show_repoactions
