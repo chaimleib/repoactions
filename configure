@@ -1696,7 +1696,7 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: rc file: $rc" >&5
 $as_echo "$as_me: rc file: $rc" >&6;}
 
-ac_config_files="$ac_config_files src/show_repoactions.sh"
+ac_config_files="$ac_config_files src/repoactions.sh"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -2403,7 +2403,7 @@ cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
 for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
-    "src/show_repoactions.sh") CONFIG_FILES="$CONFIG_FILES src/show_repoactions.sh" ;;
+    "src/repoactions.sh") CONFIG_FILES="$CONFIG_FILES src/repoactions.sh" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
@@ -3560,7 +3560,7 @@ cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
 for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
-    "src/show_repoactions.sh") CONFIG_FILES="$CONFIG_FILES src/show_repoactions.sh" ;;
+    "src/repoactions.sh") CONFIG_FILES="$CONFIG_FILES src/repoactions.sh" ;;
     "README.md") CONFIG_FILES="$CONFIG_FILES README.md" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
@@ -4718,7 +4718,7 @@ cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
 for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
-    "src/show_repoactions.sh") CONFIG_FILES="$CONFIG_FILES src/show_repoactions.sh" ;;
+    "src/repoactions.sh") CONFIG_FILES="$CONFIG_FILES src/repoactions.sh" ;;
     "README.md") CONFIG_FILES="$CONFIG_FILES README.md" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
 

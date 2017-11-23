@@ -13,6 +13,6 @@ else
 fi
 AC_MSG_NOTICE([rc file: ]$rc)
 
-AC_OUTPUT([src/show_repoactions.sh])
+AC_OUTPUT([src/repoactions.sh])
 AC_OUTPUT([README.md])
 AC_OUTPUT([Makefile])
