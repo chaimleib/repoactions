@@ -48,22 +48,37 @@ function _repoactions_main() {
     esac
 }
 
+function _repoactions_proj_dir() {
+    if ! [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]; then
+        return 1
+    fi
+    git rev-parse --show-toplevel 2>/dev/null
+    return "$?"
+}
+
+function _repoactions_proj_id() {
+    local projDir
+    local projUrl
+    projDir="$1"
+    projUrl="$(git config --get remote.origin.url 2>/dev/null)"
+    if [ -z "$projUrl" ]; then
+        echo "$projDir"
+    fi
+    echo "$projUrl"
+}
+
 function _repoactions_echo() {
     local projdir
     local proj
     local script
 
-    if ! [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]; then
+    projdir="$(_repoactions_proj_dir)"
+    if [ "$?" -ne 0 ]; then
         return 1
     fi
 
-    projdir="$(git rev-parse --show-toplevel 2>/dev/null)"
-
     # Get the project id to determine whitelist status
-    proj="$(git config --get remote.origin.url 2>/dev/null)"
-    if [ -z "$proj" ]; then
-        proj="$projdir"
-    fi
+    proj="$(_repoactions_proj_id "$projdir")"
 
     script="${projdir}/repoactions.sh"
     if ! [ -x "$script" ]; then
