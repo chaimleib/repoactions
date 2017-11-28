@@ -6,7 +6,6 @@
 # vertical pipe, and then the path to repoactions.sh script. Otherwise, we echo
 # nothing.
 
-# if ! type _repoactions_main &>/dev/null; then
 function _repoactions_usage() {
     echo "repoactions v0.0.11"
     echo "https://github.com/chaimleib/repoactions"
@@ -178,8 +177,6 @@ function _repoactions_zap_configs() {
     rm -rf "$cfgDir"
     echo "Done; configs deleted"
 }
-
-# fi
 
 if [ "${BASH_SOURCE[0]}" == "${0}" ]; then
     # script is not being sourced; pass args to _repoactions_main
