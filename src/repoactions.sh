@@ -245,17 +245,14 @@ function _repoactions_echo_run_command() {
 
     # Success!
     if _repoactions_is_listed "$proj" whitelist; then
-        echo ". ${script};"
+        printf ". %q\n" "${script}"
         return
     fi
     # Not in whitelist
 
-    if _repoactions_is_listed "$proj" silence; then
-        return
+    if ! _repoactions_is_listed "$proj" silence; then
+        _repoactions_hint "$script" >&2
     fi
-    # Not in silence list
-
-    _repoactions_hint "$script" >&2
 }
 
 function _repoactions_is_listed() {
