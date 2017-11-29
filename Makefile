@@ -3,6 +3,7 @@ PREFIX=/usr/local
 RC=${HOME}/.profile
 
 all: Makefile README.md
+	chmod +x src/repoactions.sh
 
 install: all uninstall install.sh
 	./install.sh "$(PREFIX)" "$(RC)"

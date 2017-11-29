@@ -1,22 +1,20 @@
 #!/bin/bash
-# This script may be run standalone or source-d.
-
-# If there is an executable repoactions.sh at the root of the git repo, AND the
-# git repo is in the whitelist, we echo the name of the repo, followed by a
-# vertical pipe, and then the path to repoactions.sh script. Otherwise, we echo
-# nothing.
+# This script should be run standalone, but can be source-d for debugging.
 
 function _repoactions_usage() {
     echo "repoactions v@version@"
     echo "@url@"
     echo "repoactions - run script on entering a git repo"
-    echo "Usage: show_repoactions -[eczhv]"
+    echo "Usage: $_repoactions_script_name -[cheswvz]"
     echo ""
     echo "Options:"
-    echo "  e      Echoes projId|path/to/proj/repoactions.sh"
     echo "  c      Create config files, if not present"
-    echo "  z      Zap (delete) config files"
+    echo "  e      Echoes projId|path/to/proj/repoactions.sh"
     echo "  h, v   Show this message"
+    echo "  s      Silence config hints about this repo's repoactions.sh"
+    echo "  w      Whitelist this repo's repoactions.sh and auto-run it when cd-ing in"
+    echo "  z      Zap (delete) config files"
+    echo ""
 }
 
 function _repoactions_main() {
@@ -26,7 +24,15 @@ function _repoactions_main() {
     fi
     case "$1" in
     '-e')
-        _repoactions_echo
+        _repoactions_config_line
+        return "$?"
+        ;;
+    '-s')
+        _repoactions_silence
+        return "$?"
+        ;;
+    '-w')
+        _repoactions_whitelist
         return "$?"
         ;;
     '-c')
@@ -67,13 +73,60 @@ function _repoactions_proj_id() {
     echo "$projUrl"
 }
 
-function _repoactions_echo() {
+function _repoactions_silence() {
+    local projdir
+    local proj
+    projdir="$(_repoactions_proj_dir)"
+    if [ "$?" -ne 0 ]; then
+        echo "Error: not inside a git repo" >&2
+        return 1
+    fi
+    proj="$(_repoactions_proj_id "$projdir")"
+
+    # Already listed
+    if _repoactions_is_listed "$proj" silence; then
+        echo "Already silenced hints about repoactions.sh of $proj"
+        return
+    fi
+    _repoactions_create_configs
+    echo "$proj" >> "$(_repoactions_config silence)"
+    echo "Sliencing hints about repoactions.sh of $proj"
+}
+
+function _repoactions_whitelist() {
+    local projdir
+    local proj
+    local script
+    projdir="$(_repoactions_proj_dir)"
+    if [ "$?" -ne 0 ]; then
+        echo "Error: not inside a git repo" >&2
+        return 1
+    fi
+    proj="$(_repoactions_proj_id "$projdir")"
+
+    script="${projdir}/repoactions.sh"
+    if ! [ -x "$script" ]; then
+        echo "Warning: to enable, execute permission must be set on $script" >&2
+    fi
+
+    # Success!
+    if _repoactions_is_listed "$proj" whitelist; then
+        echo "Already whitelisted repoactions.sh of $proj"
+        return
+    fi
+    _repoactions_create_configs
+    echo "$proj" >> "$(_repoactions_config whitelist)"
+    echo "Whitelisting repoactions.sh of $proj"
+}
+
+function _repoactions_config_line() {
     local projdir
     local proj
     local script
 
     projdir="$(_repoactions_proj_dir)"
     if [ "$?" -ne 0 ]; then
+        echo "Error: not inside a git repo" >&2
         return 1
     fi
 
@@ -92,20 +145,21 @@ function _repoactions_echo() {
     fi
 
     # Not in whitelist
-    if _repoactions_is_listed "$proj" ignore; then
+    if _repoactions_is_listed "$proj" silence; then
         return
     fi
 
-    # Not in ignore list
+    # Not in silence list
     cat << EOF >&2
 repoactions: found $script
 To enable it, add its project to the whitelist:
 
-    echo "$proj" >> "$(_repoactions_config whitelist)"
+    $_repoactions_script_name -w
 
 Or, to silence this message without enabling the repoactions script:
 
-    echo "$proj" >> "$(_repoactions_config ignore)"
+    $_repoactions_script_name -s
+
 EOF
 }
 
@@ -140,7 +194,7 @@ function _repoactions_config() {
 function _repoactions_create_configs() {
     local cfgDir
     local whitelist
-    local ignore
+    local silence
 
     cfgDir="$(_repoactions_config)"
     if ! [ -d "$cfgDir" ]; then
@@ -152,12 +206,12 @@ function _repoactions_create_configs() {
         echo "Creating a blank whitelist ($whitelist) ..."
         touch "$whitelist"
     fi
-    ignore="$(_repoactions_config ignore)"
-    if ! [ -f "$ignore" ]; then
-        echo "Creating a blank ignore file ($ignore) ..."
-        touch "$ignore"
+    silence="$(_repoactions_config silence)"
+    if ! [ -f "$silence" ]; then
+        echo "Creating a blank silence file ($silence) ..."
+        touch "$silence"
     fi
-    echo "Done; configs are present"
+    echo "Configs are present"
 }
 
 function _repoactions_zap_configs() {
@@ -190,9 +244,11 @@ function _repoactions_zap_configs() {
     done
     echo "Deleting config directory ($cfgDir) ..."
     rm -rf "$cfgDir"
-    echo "Done; configs deleted"
+    echo "Configs deleted"
 }
 
+
+_repoactions_script_name="${BASH_SOURCE[0]}"
 if [ "${BASH_SOURCE[0]}" == "${0}" ]; then
     # script is not being sourced; pass args to _repoactions_main
     _repoactions_main "$@"
