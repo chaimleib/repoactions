@@ -5,12 +5,14 @@ function _repoactions_usage() {
     echo "repoactions v0.0.11"
     echo "https://github.com/chaimleib/repoactions"
     echo "repoactions - run script on entering a git repo"
-    echo "Usage: $_repoactions_script_name -[cheswvz]"
+    echo "Usage: $_repoactions_script_name -[cdehswvz]"
     echo ""
     echo "Options:"
     echo "  c      Create config files, if not present"
-    echo "  e      Echoes projId|path/to/proj/repoactions.sh"
+    echo "  d      Prints doctor's messages for debugging issues with repoactions.sh"
     echo "  h, v   Show this message"
+    echo "  e      Echoes a command to source this repo's repoactions.sh, if it is"
+    echo "             whitelisted and executable"
     echo "  s      Silence config hints about this repo's repoactions.sh"
     echo "  w      Whitelist this repo's repoactions.sh and auto-run it when cd-ing in"
     echo "  z      Zap (delete) config files"
@@ -24,7 +26,11 @@ function _repoactions_main() {
     fi
     case "$1" in
     '-e')
-        _repoactions_config_line
+        _repoactions_echo_run_command
+        return "$?"
+        ;;
+    '-d')
+        _repoactions_doctor
         return "$?"
         ;;
     '-s')
@@ -119,38 +125,10 @@ function _repoactions_whitelist() {
     echo "Whitelisting repoactions.sh of $proj"
 }
 
-function _repoactions_config_line() {
-    local projdir
-    local proj
+function _repoactions_hint() {
     local script
-
-    projdir="$(_repoactions_proj_dir)"
-    if [ "$?" -ne 0 ]; then
-        echo "Error: not inside a git repo" >&2
-        return 1
-    fi
-
-    # Get the project id to determine whitelist status
-    proj="$(_repoactions_proj_id "$projdir")"
-
-    script="${projdir}/repoactions.sh"
-    if ! [ -x "$script" ]; then
-        return
-    fi
-
-    # Success!
-    if _repoactions_is_listed "$proj" whitelist; then
-        echo "${proj}|${script}"
-        return
-    fi
-
-    # Not in whitelist
-    if _repoactions_is_listed "$proj" silence; then
-        return
-    fi
-
-    # Not in silence list
-    cat << EOF >&2
+    script="$1"
+    cat << EOF
 repoactions: found $script
 To enable it, add its project to the whitelist:
 
@@ -161,6 +139,113 @@ Or, to silence this message without enabling the repoactions script:
     $_repoactions_script_name -s
 
 EOF
+}
+
+function _repoactions_doctor() {
+    local projdir
+    local proj
+    local script
+    local silenced
+
+    echo "## Repoactions doctor ##"
+    echo ""
+
+    projdir="$(_repoactions_proj_dir)"
+    if [ "$?" -ne 0 ]; then
+        echo "Not inside a git repo"
+        return 1
+    fi
+    echo "Project dir: $projdir"
+
+    # Get the project id to determine whitelist status
+    proj="$(_repoactions_proj_id "$projdir")"
+    echo "Project ID: $proj"
+
+    script="${projdir}/repoactions.sh"
+    if ! [ -f "$script" ]; then
+        echo "Script: does not exist"
+        echo "Try creating"
+        echo "    $script"
+        echo ""
+        echo "Then, make sure it is executable with"
+        echo "    chmod +x $script"
+        echo ""
+        echo "When repoactions get run for this repo, that script will be source-d."
+        echo ""
+        return 1
+    fi
+    echo "Script: $script"
+    echo ""
+    _repoactions_is_listed "$proj" silence
+    silenced="$?"
+    if [ "$silenced" -eq 0 ]; then
+        echo "Hints: silenced"
+    else
+        echo "Hints: enabled"
+    fi
+    if ! [ -x "$script" ]; then
+        echo "Executable: no"
+        echo "Try running"
+        echo "    chmod +x $script"
+        echo ""
+        return 1
+    else
+        echo "Executable: yes"
+    fi
+
+    # Success!
+    if _repoactions_is_listed "$proj" whitelist; then
+        echo "Whitelisted: yes"
+    else
+        echo "Whitelisted: no"
+        echo "To enable this script, run"
+        echo "    $_repoactions_script_name -w"
+        echo ""
+        if [ "$silenced" -ne 0 ]; then
+            echo "Alternatively, if you want to silence hints about this repo, run"
+            echo "    $_repoactions_script_name -s"
+            echo ""
+        fi
+        return 1
+    fi
+    echo ""
+    echo "## Repoactions is enabled for this git repo ##"
+    echo ""
+}
+
+function _repoactions_echo_run_command() {
+    local projdir
+    local proj
+    local script
+
+    projdir="$(_repoactions_proj_dir)"
+    if [ "$?" -ne 0 ]; then
+        # Not in git repo
+        return
+    fi
+
+    # Get the project id to determine whitelist status
+    proj="$(_repoactions_proj_id "$projdir")"
+
+    script="${projdir}/repoactions.sh"
+    if ! [ -x "$script" ]; then
+        # Script not enabled; must be executable
+        return
+    fi
+
+    # Success!
+    if _repoactions_is_listed "$proj" whitelist; then
+        echo ". ${script};"
+        return
+    fi
+    # Not in whitelist
+
+    if _repoactions_is_listed "$proj" silence; then
+        return
+    fi
+    # Not in silence list
+
+    _repoactions_hint "$script" >&2
 }
 
 function _repoactions_is_listed() {
