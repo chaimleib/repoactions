@@ -14,7 +14,9 @@ function _repoactions_usage() {
     echo "  e      Echoes a command to source this repo's repoactions.sh, if it is"
     echo "             whitelisted and executable"
     echo "  s      Silence config hints about this repo's repoactions.sh"
+    echo "  S      Un-silence config hints"
     echo "  w      Whitelist this repo's repoactions.sh and auto-run it when cd-ing in"
+    echo "  W      Un-whitelist this repo"
     echo "  z      Zap (delete) config files"
     echo ""
 }
@@ -37,8 +39,16 @@ function _repoactions_main() {
         _repoactions_silence
         return "$?"
         ;;
+    '-S')
+        _repoactions_unlist silence
+        return "$?"
+        ;;
     '-w')
         _repoactions_whitelist
+        return "$?"
+        ;;
+    '-W')
+        _repoactions_unlist whitelist
         return "$?"
         ;;
     '-c')
@@ -96,7 +106,7 @@ function _repoactions_silence() {
     fi
     _repoactions_create_configs
     echo "$proj" >> "$(_repoactions_config silence)"
-    echo "Sliencing hints about repoactions.sh of $proj"
+    echo "Silencing hints about repoactions.sh of $proj"
 }
 
 function _repoactions_whitelist() {
@@ -263,6 +273,38 @@ function _repoactions_is_listed() {
         fi
     done < "$list"
     return 1
+}
+
+function _repoactions_unlist() {
+    local projId
+    local listName
+    local list
+    local removed
+    local projdir
+    listName="$1"
+    projdir="$(_repoactions_proj_dir)"
+    if [ "$?" -ne 0 ]; then
+        echo "Error: not inside a git repo" >&2
+        return 1
+    fi
+    projId="$(_repoactions_proj_id "$projdir")"
+    list="$(_repoactions_config "$listName")"
+    if ! [ -f "$list" ]; then
+        return 1
+    fi
+    while read -r line; do
+        if [ "$line" == "$projId" ]; then
+            removed=y
+            continue
+        fi
+        echo "$line"
+    done < "$list" > "${list}.temp"
+    if [ "$removed" == "y" ]; then
+        mv "${list}.temp" "$list"
+        echo "Unlisted this repo from $listName file" >&2
+    else
+        echo "Already not listed in $listName file" >&2
+    fi
 }
 
 function _repoactions_config() {
