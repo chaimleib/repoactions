@@ -13,7 +13,8 @@ fi
 
 libexec="${PREFIX}/libexec/repoactions"
 rm -rf "$libexec"
-rm -f "${PREFIX}/bin/show_repoactions"
+rm -f "${PREFIX}/bin/show_repoactions"  # old name of repoactions
+rm -f "${PREFIX}/bin/repoactions"
 if [ -f "$profile" ]; then
     sed -i '' '/^# BEGIN repoactions/,/^# END repoactions/d' "$profile"
 fi

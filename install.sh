@@ -21,26 +21,17 @@ if ! [ -d "${PREFIX}/bin" ]; then
     mkdir -p "${PREFIX}/bin"
 fi
 
-# ensure whitelist and ignore
-config="${HOME}/.config/repoactions"
-if ! [ -d "$config" ]; then
-    mkdir -p "$config"
-fi
-touch "${config}/whitelist"
-touch "${config}/ignore"
-
 # copy and link
 cp -Rf ./src/*.sh ./README.md ./LICENSE "${libexec}/"
 chmod +x "${libexec}"/*.sh
 pushd "${PREFIX}/bin" >/dev/null
-ln -s ../libexec/repoactions/show_repoactions.sh show_repoactions
+ln -s ../libexec/repoactions/repoactions.sh repoactions
 popd >/dev/null
 
 # setup prompt command
 cat << EOF >> "$profile"
 # BEGIN repoactions triggers
-source "$libexec/_repoactions.sh"
-PROMPT_COMMAND="_repoactions;\${PROMPT_COMMAND}"
+PROMPT_COMMAND='eval "\$(repoactions -e)";'"\${PROMPT_COMMAND}"
 export PROMPT_COMMAND
 # END repoactions
 EOF
