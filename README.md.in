@@ -15,7 +15,7 @@ Wouldn't it be nice if all these variables got set up automatically as soon as y
 
 ```bash
 ./configure
-make install
+sudo make install
 ```
 
 ### Homebrew
@@ -26,7 +26,7 @@ brew install chaimleib/formulae/repoactions
 ```
 
 ### Advanced options
-For more control, `configure` currently allows you to set the installation prefix with the `--prefix=` option. You can also specify where the login code gets injected by using the `--with-rc=FILE` option (default is `$HOME/.profile`):
+For more control, `configure` currently allows you to set the installation prefix with the `--prefix=` option. You can also specify where your shell's `PROMPT_COMMAND` gets updated by using the `--with-rc=FILE` option (default is `$HOME/.profile`):
 
 ```bash
 ./configure --prefix=/opt --with-rc="$HOME/.bashrc.d/repoactions.sh"
@@ -44,38 +44,40 @@ touch repoactions.sh
 chmod +x repoactions.sh
 ```
 
-After that, you should see a message telling to add this repo to the whitelist. (This is a security feature.) Copy and paste in the command it tells you. For example:
+After that, you should see a message telling you to enable and add this repo to the whitelist. (This is a security feature.) You can do so by running
 
 ```bash
-echo "git@github.com:chaimleib/repoactions.git" >> "/Users/chalbert/.config/repoactions/whitelist"
+repoactions -w
 ```
 
 From now on, the repoactions script will run each time you navigate from outside your repo into it.
 
-You can relocate your repo anywhere on your disk, and your whitelist will still work, because your repo is identified by its URL:
+> If your repo is cloned from a remote repository, you can relocate your repo anywhere on your disk, and your whitelist will still work, because your repo is identified by its URL:
 
-```bash
+  ```bash
 git config --get remote.origin.url
 ```
 
 ### Silencing warnings
 
-If there is a particular repo which has a `repoactions.sh` that you do not want to run, you can silence the warning message by adding the repo name to the ignore file:
+If there is a particular repo which has a `repoactions.sh` that you do not want to run, you can silence the warning message by running
 
 ```bash
-echo "git@github.com:chaimleib/repoactions.git" >> "/Users/chalbert/.config/repoactions/ignore"
+repoactions -s
 ```
 
 ## Uninstall
 
+To remove the preferences, run
+
 ```bash
-make uninstall
+repoactions -z
 ```
 
-To also remove the preferences, run
+Then, you can uninstall repoactions itself:
 
 ```bash
-make purge
+make uninstall
 ```
 
 ## Changelog
@@ -90,3 +92,5 @@ make purge
 * 0.0.9 (2016-11-22) - use $HOME instead of ~ in documentation; absolute paths are required for `--with-rc=`, shorten readme
 * 0.0.10 (2017-08-18) - simplified certain commands. Add shellcheck test. Fix: `uninstall.sh`, and therefore `make uninstall` and `make install`, failed when `~/.profile` was missing
 * 0.0.11 (2017-09-01) - Fix: `show_repoactions -v` did not display version
+* 0.1.0 (2017-12-01) - Restructured the main script, simplified the command for setting `PROMPT_COMMAND`. Main script has many more options.
+
