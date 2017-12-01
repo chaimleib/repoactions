@@ -231,21 +231,30 @@ function _repoactions_echo_run_command() {
     projdir="$(_repoactions_proj_dir)"
     if [ "$?" -ne 0 ]; then
         # Not in git repo
+        echo "export REPOACTIONS_PROJ="
         return
     fi
 
     # Get the project id to determine whitelist status
     proj="$(_repoactions_proj_id "$projdir")"
 
+    # Skip sourcing repoactions.sh if already in the repo tree
+    if [ "$proj" == "$REPOACTIONS_PROJ" ]; then
+        return
+    fi
+
     script="${projdir}/repoactions.sh"
     if ! [ -x "$script" ]; then
         # Script not enabled; must be executable
+        echo "export REPOACTIONS_PROJ="
         return
     fi
 
     # Success!
     if _repoactions_is_listed "$proj" whitelist; then
-        printf ". %q\n" "${script}"
+        printf 'REPOACTIONS_PROJ=%q\n' "$proj"
+        echo "export REPOACTIONS_PROJ"
+        printf 'source %q\n' "$script"
         return
     fi
     # Not in whitelist
@@ -253,6 +262,7 @@ function _repoactions_echo_run_command() {
     if ! _repoactions_is_listed "$proj" silence; then
         _repoactions_hint "$script" >&2
     fi
+    echo "export REPOACTIONS_PROJ="
 }
 
 function _repoactions_is_listed() {
