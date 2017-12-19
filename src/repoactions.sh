@@ -2,10 +2,10 @@
 # This script should be run standalone, but can be source-d for debugging.
 
 function _repoactions_usage() {
-    echo "repoactions v0.1.0"
+    echo "repoactions v0.2.0"
     echo "https://github.com/chaimleib/repoactions"
     echo "repoactions - run script on entering a git repo"
-    echo "Usage: $_repoactions_script_name -[cdehswvz]"
+    echo "Usage: $_repoactions_script_name -[cdehsSwWvz]"
     echo ""
     echo "Options:"
     echo "  c      Create config files, if not present"
@@ -262,7 +262,7 @@ function _repoactions_echo_run_command() {
     if ! _repoactions_is_listed "$proj" silence; then
         _repoactions_hint "$script" >&2
     fi
-    echo "export REPOACTIONS_PROJ="
+    printf 'REPOACTIONS_PROJ=%q\n' "$proj"
 }
 
 function _repoactions_is_listed() {

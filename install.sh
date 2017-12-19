@@ -33,7 +33,7 @@ if [ -z "$profile" ]; then
 	echo "We have not updated your shell's rc files."
 	echo "Add this line to your .bashrc:"
 	echo ""
-	printf "    PROMPT_COMMAND=%q\n" "$PROMPT_COMMAND"
+	printf '    PROMPT_COMMAND="%s"\n' "$(echo "$PROMPT_COMMAND" | sed 's/"/\\"/g')"
 	echo ""
 else
 	# setup prompt command

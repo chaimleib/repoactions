@@ -1,6 +1,6 @@
 SHELL=bash
 PREFIX=/usr/local
-RC=${HOME}/.profile
+RC=
 
 all: Makefile README.md
 	chmod +x src/repoactions.sh

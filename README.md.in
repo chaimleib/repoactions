@@ -93,4 +93,5 @@ make uninstall
 * 0.0.10 (2017-08-18) - simplified certain commands. Add shellcheck test. Fix: `uninstall.sh`, and therefore `make uninstall` and `make install`, failed when `~/.profile` was missing
 * 0.0.11 (2017-09-01) - Fix: `show_repoactions -v` did not display version
 * 0.1.0 (2017-12-01) - Restructured the main script, simplified the command for setting `PROMPT_COMMAND`. Main script has many more options.
+* 0.2.0 (2017-12-19) - Made install default to not modify RC files. Hint is now displayed only the first time user cd's into the repo. Fix missing options in help message.
 

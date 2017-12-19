@@ -16,6 +16,8 @@ rm -rf "$libexec"
 rm -f "${PREFIX}/bin/show_repoactions"  # old name of repoactions
 rm -f "${PREFIX}/bin/repoactions"
 if [ -f "$profile" ]; then
-    sed -i '' '/^# BEGIN repoactions/,/^# END repoactions/d' "$profile"
+    if ! sed -i '' '/^# BEGIN repoactions/,/^# END repoactions/d' "$profile"; then
+	    echo "Nothing to change in $profile"
+    fi
 fi
 
