@@ -380,9 +380,14 @@ function _repoactions_zap_configs() {
 }
 
 
+# for documentation and messages only!
 _repoactions_script_name="${BASH_SOURCE[0]}"
+the_which="$(which repoactions)" &&
+    [[ "$the_which" == "$_repoactions_script_name" ]] &&
+    _repoactions_script_name="repoactions"
 if [ "${BASH_SOURCE[0]}" == "${0}" ]; then
     # script is not being sourced; pass args to _repoactions_main
     _repoactions_main "$@"
     exit "$?"
 fi
+
