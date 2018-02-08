@@ -2,7 +2,7 @@
 # This script should be run standalone, but can be source-d for debugging.
 
 function _repoactions_usage() {
-    echo "repoactions v0.3.1"
+    echo "repoactions v0.3.2"
     echo "https://github.com/chaimleib/repoactions"
     echo "repoactions - run script on entering a git repo"
     echo "Usage: $_repoactions_script_name -[cdehsSwWvz]"
