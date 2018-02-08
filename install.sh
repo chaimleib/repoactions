@@ -39,7 +39,11 @@ else
 	# setup prompt command
 	cat << EOF >> "$profile"
 # BEGIN repoactions triggers
-PROMPT_COMMAND='eval "\$(repoactions -e)";'"\${PROMPT_COMMAND}"
+if [[ -n "$PROMPT_COMMAND" ]] && [[ "$PROMPT_COMMAND" != *; ]]; then
+    PROMPT_COMMAND="${PROMPT_COMMAND}"';eval "\$(repoactions -e)";'
+else
+    PROMPT_COMMAND="${PROMPT_COMMAND}"'eval "\$(repoactions -e)";'
+fi
 export PROMPT_COMMAND
 # END repoactions
 EOF
