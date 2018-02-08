@@ -92,8 +92,8 @@ function _repoactions_proj_id() {
 function _repoactions_silence() {
     local projdir
     local proj
-    projdir="$(_repoactions_proj_dir)"
-    if [ "$?" -ne 0 ]; then
+
+    if ! projdir="$(_repoactions_proj_dir)"; then
         echo "Error: not inside a git repo" >&2
         return 1
     fi
@@ -113,8 +113,8 @@ function _repoactions_whitelist() {
     local projdir
     local proj
     local script
-    projdir="$(_repoactions_proj_dir)"
-    if [ "$?" -ne 0 ]; then
+
+    if ! projdir="$(_repoactions_proj_dir)"; then
         echo "Error: not inside a git repo" >&2
         return 1
     fi
@@ -160,8 +160,7 @@ function _repoactions_doctor() {
     echo "## Repoactions doctor ##"
     echo ""
 
-    projdir="$(_repoactions_proj_dir)"
-    if [ "$?" -ne 0 ]; then
+    if ! projdir="$(_repoactions_proj_dir)"; then
         echo "Not inside a git repo"
         return 1
     fi
@@ -228,8 +227,7 @@ function _repoactions_echo_run_command() {
     local proj
     local script
 
-    projdir="$(_repoactions_proj_dir)"
-    if [ "$?" -ne 0 ]; then
+    if ! projdir="$(_repoactions_proj_dir)"; then
         # Not in git repo
         echo "export REPOACTIONS_PROJ="
         return
@@ -289,8 +287,8 @@ function _repoactions_unlist() {
     local removed
     local projdir
     listName="$1"
-    projdir="$(_repoactions_proj_dir)"
-    if [ "$?" -ne 0 ]; then
+
+    if ! projdir="$(_repoactions_proj_dir)"; then
         echo "Error: not inside a git repo" >&2
         return 1
     fi
