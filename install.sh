@@ -8,11 +8,9 @@ profile="$2"
 function repoactions_triggers() {
     cat << 'EOF'
 # BEGIN repoactions triggers
-if [[ -n "$PROMPT_COMMAND" ]] && [[ "$PROMPT_COMMAND" != *; ]]; then
-    PROMPT_COMMAND="${PROMPT_COMMAND}"';eval "$(repoactions -e)"'
-else
-    PROMPT_COMMAND="${PROMPT_COMMAND}"'eval "$(repoactions -e)"'
-fi
+sep=
+[[ -n "$PROMPT_COMMAND" ]] && [[ "$PROMPT_COMMAND" != *; ]] && sep=';'
+PROMPT_COMMAND="${PROMPT_COMMAND}${sep}"'eval "$(repoactions -e)"'
 export PROMPT_COMMAND
 # END repoactions
 EOF
