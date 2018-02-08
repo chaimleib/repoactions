@@ -1,4 +1,4 @@
-# repoactions 0.2.1
+# repoactions 0.3.0
 
 On navigating into a git repository, sources its repoactions.sh script.
 
@@ -95,4 +95,5 @@ make uninstall
 * 0.1.0 (2017-12-01) - Restructured the main script, simplified the command for setting `PROMPT_COMMAND`. Main script has many more options.
 * 0.2.0 (2017-12-19) - Made install default to not modify RC files. Hint is now displayed only the first time user cd's into the repo. Fix missing options in help message.
 * 0.2.1 (2017-12-19) - address `make test` warning about `sed` usage
+* 0.3.0 (2018-02-08) - Inject self at end of `PROMPT_COMMAND` instead of the beginning, to enable prompt commands sensitive to exit codes. Shorten script name in docs if we are on the `PATH`. Fix `make test` warnings about unnecessary checks on `$?`.
 
