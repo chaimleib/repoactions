@@ -384,7 +384,11 @@ function _repoactions_zap_configs() {
 _repoactions_script_name="${BASH_SOURCE[0]}"
 the_which="$(which repoactions)" &&
     [[ "$the_which" == "$_repoactions_script_name" ]] &&
-    _repoactions_script_name="repoactions"
+    _disable_abs_script_name=y
+[[ -L "$the_which" ]] &&
+    [[ "$(readlink "$the_which")" == "$_repoactions_script_name" ]] &&
+    _disable_abs_script_name=y
+[[ -n "$_disable_abs_script_name" ]] && _repoactions_script_name="repoactions"
 if [ "${BASH_SOURCE[0]}" == "${0}" ]; then
     # script is not being sourced; pass args to _repoactions_main
     _repoactions_main "$@"
