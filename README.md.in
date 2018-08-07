@@ -98,4 +98,5 @@ make uninstall
 * 0.3.0 (2018-02-08) - Inject self at end of `PROMPT_COMMAND` instead of the beginning, to enable prompt commands sensitive to exit codes. Shorten script name in docs if we are on the `PATH`. Fix `make test` warnings about unnecessary checks on `$?`.
 * 0.3.1 (2018-02-08) - fix setting of `PROMPT_COMMAND`
 * 0.3.2 (2018-02-08) - simplify injected lines for `PROMPT_COMMAND`
+* 0.3.3 (2018-08-07) - fix quoting on injected lines for `PROMPT_COMMAND`
 

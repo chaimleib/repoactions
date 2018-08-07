@@ -8,9 +8,9 @@ profile="$2"
 function repoactions_triggers() {
     cat << 'EOF'
 # BEGIN repoactions triggers
-sep=
-[[ -n "$PROMPT_COMMAND" ]] && [[ "$PROMPT_COMMAND" != *; ]] && sep=';'
-PROMPT_COMMAND="${PROMPT_COMMAND}${sep}"'eval "$(repoactions -e)"'
+[[ -n "$PROMPT_COMMAND" ]] && [[ "$PROMPT_COMMAND" != *';' ]] &&
+  PROMPT_COMMAND="$PROMPT_COMMAND;"
+PROMPT_COMMAND="$PROMPT_COMMAND"'eval "$(repoactions -e)"'
 export PROMPT_COMMAND
 # END repoactions
 EOF
@@ -44,11 +44,11 @@ if [ -z "$profile" ]; then
 	echo "We have not updated your shell's rc files."
 	echo "Add these lines to your .bashrc, or equivalent:"
 	echo ""
-    repoactions_triggers
+  repoactions_triggers
 else
-    repoactions_triggers >> "$profile"
-    echo "Note: repoactions sets itself up when you open your shell, so a few"
-    echo "lines have been added to"
-    echo "  $profile"
+  repoactions_triggers >> "$profile"
+  echo "Note: repoactions sets itself up when you open your shell, so a few"
+  echo "lines have been added to"
+  echo "  $profile"
 fi
 
